@@ -1,65 +1,119 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        main{
-            width: 5em;
-            text-align: right;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        main span{
-             text-align: left;
-        }
-        #flex{
-            display: flex;
-            justify-content: space-between;
-        }
-    </style>
-    <title>Odejmowanie i mnożenie pisemne</title>
+    <meta name="author" content="Kamil Priefer">
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>Odejmowanie pisemne</title>
+	<style>
+		table {
+			text-align:center;
+			margin:auto;
+		}
+		td {
+			width:40px;
+			height:55px;
+			border: 1px solid black;
+			font-size:40px;
+		}
+		td.bezramki {
+			border: 0px;
+		}
+	
+	</style>
 </head>
 <body>
-    <header>
-        <form action="">
-            <input type="number" name="" id="liczba1" placeholder="Pierwsza liczba">
-            <input type="number" name="" id="liczba2" placeholder="Druga liczba">
-            <br>
-            <input id="wyczysc" type="submit" value="Wyczyść">
-            <input id="wstaw"  type="submit" value="Wstaw">
-            <input id="oblicz" type="submit" value="Oblicz">
-        </form>
-    </header>
-    <main>
-        
-    </main>
-    <footer>
-
-    </footer>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
-        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-    <script>
-        $("#wstaw").click(function (e) { 
-            e.preventDefault();
-            var liczba1 = $("#liczba1").val();
-            var liczba2 = $("#liczba2").val();
-            var mnozenie = liczba1 * liczba2;
-            var zawartosc = '<div>' + liczba1 + "<br><div id='flex'>"+ "<div>*</div><div>" + liczba2 + "</div></div><hr>";
-            if(liczba2.length == 1){
-                zawartosc += mnozenie;
-            }else{
-                for (let index = liczba2.length; index > 0; index--) {
-                    
-                 zawartosc += liczba1 * liczba2[index - 1] + "<br>";
-
-                    
-                }
-                zawartosc += "<hr>"
+	<div style="background-color:lightblue; padding:20">
+		<h1>Wpisz dwie liczby</h1>
+		<form>
+			<label for="liczba1">Pierwsza liczba:</label>
+			<input type="text" id="liczba1" maxlength="5">
+			<label for="liczba2">Druga liczba:</label>	
+			<input type="text" id="liczba2" maxlength="5">
+			<br/><br/>
+			<button type="button" onclick="wyczyscPola()">Wyczyść pola</button> 
+			<button type="button" onclick="wprowadzLiczby()">Wprowadź liczby</button> 
+			<button type="button" onclick="wykonajOdejmowanie()">Wykonaj odejmowanie</button> 
+		</form>
+	</div>
+	<div style="background-color:lightgreen; padding:20;">
+		<table>
+			<tr>
+				<td class='bezramki'></td>
+				<td id="1_1"></td>
+				<td id="1_2"></td>
+				<td id="1_3"></td>
+				<td id="1_4"></td>
+				<td id="1_5"></td>	
+			</tr>
+			<tr>
+				<td>-</td>
+				<td id="2_1"></td>
+				<td id="2_2"></td>
+				<td id="2_3"></td>
+				<td id="2_4"></td>
+				<td id="2_5"></td>	
+			</tr>
+		</table>
+		<hr style="width:300px; border:1px solid black;">
+		<table>
+			<tr>
+				<td id="3_0"></td>
+				<td id="3_1"></td>
+				<td id="3_2"></td>
+				<td id="3_3"></td>
+				<td id="3_4"></td>
+				<td id="3_5"></td>	
+			</tr>
+		</table>
+	</div>
+	   <script>
+        function wyczyscPola() {
+            document.getElementById('liczba1').value = "";
+            document.getElementById('liczba2').value = "";
+            for (i = 1; i < 6; i++) {
+                document.getElementById('1_' + i).innerHTML = "";
+                document.getElementById('2_' + i).innerHTML = "";
             }
-            zawartosc += "</div>";
-            $("main").html(zawartosc);
-        });
+            for (i = 0; i < 6; i++) {
+                document.getElementById('3_' + i).innerHTML = "";
+            }
+        }
+
+        function wprowadzLiczby() {
+            var x1 = document.getElementById('liczba1').value;
+            var x2 = document.getElementById("liczba2").value;
+            if (!isNaN(x1) && !isNaN(x2) && x1 != '' && x2 != '') {
+                for (i = 0; i < x1.length; i++) {
+                    document.getElementById('1_' + (i + 6 - x1.length)).innerHTML = x1.substring(i, i + 1);
+                }
+                for (i = 0; i < x2.length; i++) {
+                    document.getElementById('2_' + (i + 6 - x2.length)).innerHTML = x2.substring(i, i + 1);
+                }
+                for (i = 0; i < 6; i++) {
+                    document.getElementById('3_' + i).innerHTML = "";
+                }
+            } else {
+                alert("Wprowadź poprawne liczby");
+            }
+        }
+
+        function wykonajOdejmowanie() {
+            var pamiec = 0;
+            var liczbas1 = "";
+            var liczbas2 = "";
+            for (i = 5; i > 0; i--) {
+                liczbas1 = document.getElementById('1_' + i).innerHTML + liczbas1;
+                liczbas2 = document.getElementById('2_' + i).innerHTML + liczbas2;
+            }
+            var roznica = liczbas1 - liczbas2;
+            roznica = "" + roznica;
+                while (6 > roznica.length) {
+                    roznica = " " + roznica;
+                }
+            for (let i = 5; i >= 0; i--) {
+                document.getElementById('3_' + i).innerHTML = roznica[i];
+            }
+        }
     </script>
 </body>
 </html>
